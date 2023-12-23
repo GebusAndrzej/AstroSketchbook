@@ -31,11 +31,11 @@ export function checkColumn(values: number[][], y: number) {
   
 export function checkGrid(values: number[][], x: number, y: number) {
     let temp = [...POSSIBILITIES];
-    const xx = Math.floor(x / 3) * 3;
-    const yy = Math.floor(y / 3) * 3;
+    const horizontalGridNumber = Math.floor(x / 3) * 3;
+    const verticalGridNumber = Math.floor(y / 3) * 3;
   
-    for (let i = xx; i < xx + 3; i++) {
-      for (let j = yy; j < yy + 3; j++) {
+    for (let i = horizontalGridNumber; i < horizontalGridNumber + 3; i++) {
+      for (let j = verticalGridNumber; j < verticalGridNumber + 3; j++) {
         const value = values[i][j]
   
         if (value) {

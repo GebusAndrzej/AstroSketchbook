@@ -1,0 +1,45 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SudokuReact from '../components/sudoku/Sudoku';
+---
+
+<Layout title="Welcome to Astro.">
+    <main>
+        <aside>
+    
+        </aside>
+
+        <h1>Sudokuuu</h1>
+
+        <div class="sudoku">
+            <SudokuReact client:load />
+        </div>
+    </main>
+</Layout>
+
+<style>
+    main {
+        color: white;
+        min-height: 100%;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        overflow: auto;
+    }
+
+    .sudoku {
+        min-width: 600px;
+        max-width: 900px;
+        width: 100%;
+        min-height: 600px;
+        max-height: 900px;
+        height: 100%;
+        aspect-ratio: 1/1;
+
+        /* flex: 1; */
+        /* width: clamp(600px, 100%, 900px);
+        height: clamp(600px, 100%, 900px); */
+    }
+</style>

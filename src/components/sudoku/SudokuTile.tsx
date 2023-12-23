@@ -24,8 +24,9 @@ const SudokuTile: FC<Props> = ({
             ? "flex justify-center items-center"
             : "grid grid-rows-3 grid-cols-3",
         isLowestEntropy 
-            ? 'border-green-500'
-            : 'border-slate-800'
+            ? 'border-green-700 bg-green-900'
+            : 'border-slate-800',
+        !possibilities.length && !value && 'bg-red-900'
     ].join(' ')
 
     const handleCollapse = useCallback(

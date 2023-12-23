@@ -57,8 +57,8 @@ const Sudoku: FC = () => {
   )
 
   return (
-    <div className='h-full w-full'>
-      <div className='sudoku grid grid-rows-9 grid-cols-9 gap-1'>
+    // <div className='h-full w-full'>
+      <div className='sudoku h-full w-full grid grid-rows-9 grid-cols-9 gap-1'>
         {preparedValues.flat().map((entry) => (
           <SudokuTile
             key={`${entry.x}${entry.y}${entry.value}`}
@@ -75,7 +75,7 @@ const Sudoku: FC = () => {
           />
           ))}
       </div>
-    </div>
+    // </div>
   )
 }
 
