@@ -1,0 +1,30 @@
+.sudoku {
+    --line-color: white;
+    background: 
+        linear-gradient(
+            to right,
+            transparent 0%, 
+            transparent 33.1%, 
+            var(--line-color) 33.1%,
+            var(--line-color) 33.4%,
+            transparent 33.4%,
+            transparent 66.6%,
+            var(--line-color) 66.6%,
+            var(--line-color) 66.9%,
+            transparent 66.9%,
+            transparent
+        ),
+        linear-gradient(
+            to bottom,
+            transparent 0%, 
+            transparent 33.1%,
+            var(--line-color) 33.1%,
+            var(--line-color) 33.4%,
+            transparent 33.4%,
+            transparent 66.6%,
+            var(--line-color) 66.6%,
+            var(--line-color) 66.9%,
+            transparent 66.9%,
+            transparent
+        );
+}
