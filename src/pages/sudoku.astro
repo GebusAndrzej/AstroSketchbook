@@ -5,13 +5,9 @@ import SudokuReact from '../components/sudoku/Sudoku';
 
 <Layout title="Welcome to Astro.">
     <main>
-        <aside>
-    
-        </aside>
-
         <h1>Sudokuuu</h1>
 
-        <div class="sudoku">
+        <div class="sudokuContainer">
             <SudokuReact client:load />
         </div>
     </main>
@@ -29,12 +25,18 @@ import SudokuReact from '../components/sudoku/Sudoku';
         overflow: auto;
     }
 
-    .sudoku {
+    @media (max-width: 600px) {
+        main {
+            align-items: initial;
+        }
+    }
+
+    .sudokuContainer {
         min-width: 600px;
-        max-width: 900px;
+        max-width: 800px;
         width: 100%;
         min-height: 600px;
-        max-height: 900px;
+        max-height: 800px;
         height: 100%;
         aspect-ratio: 1/1;
 

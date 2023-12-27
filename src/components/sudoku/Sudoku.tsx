@@ -1,16 +1,18 @@
 import { useMemo, type FC, useState, useCallback } from 'react'
 import SudokuTile from './SudokuTile'
+import { DEFAULT_VALUES, intersection, xyToGridNo } from './utils/utils'
 import './Sudoku.css'
-import { DEFAULT_VALUES, checkColumn, checkGrid, checkRow, intersection } from './utils'
+import { columnPossibilities, gridPossibilities, rowPossibilities } from './utils/possibilities'
+import { checkColumns, checkGrids, checkRows } from './utils/rules'
 
 const Sudoku: FC = () => {
   const [values, setValues] = useState(DEFAULT_VALUES)
 
   const preparePossibilities = useCallback(
     (x: number, y: number) => {
-      const rows = checkRow(values, x);
-      const cols = checkColumn(values, y);
-      const grid = checkGrid(values, x, y);
+      const rows = rowPossibilities(values, x);
+      const cols = columnPossibilities(values, y);
+      const grid = gridPossibilities(values, x, y);
 
       const rowsAndCols = intersection(rows, cols)
       return intersection(rowsAndCols, grid);
@@ -20,15 +22,23 @@ const Sudoku: FC = () => {
 
   const preparedValues = useMemo(
     () => {
-      const a = values
+      const rowsCheck = checkRows(values);
+      const columnsCheck = checkColumns(values);
+      const gridsCheck = checkGrids(values);
+      
+      const newValues = values
         .map((column, x) => column.map((value, y) => ({
           value,
           possibilities: preparePossibilities(x,y),
           x,
           y,
+          invalid: 
+            rowsCheck[x][value] > 1 ||
+            columnsCheck[y][value] > 1 ||
+            gridsCheck[xyToGridNo(x,y)][value] > 1
         })))
 
-        return a;
+        return newValues;
     },
     [values]
   )
@@ -72,6 +82,7 @@ const Sudoku: FC = () => {
               entry.possibilities.length === minPossibilities &&
               entry.possibilities.length < 9
             }
+            invalid={entry.invalid}
           />
           ))}
       </div>

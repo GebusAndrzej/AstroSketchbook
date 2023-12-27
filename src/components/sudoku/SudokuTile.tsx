@@ -7,6 +7,7 @@ type Props = {
     y: number;
     onCollapse?: (x: number, y: number, value: number) => void;
     isLowestEntropy?: boolean;
+    invalid?: boolean;
 }
 
 const SudokuTile: FC<Props> = ({
@@ -14,11 +15,12 @@ const SudokuTile: FC<Props> = ({
     value,
     x,
     y,
+    invalid = false,
     onCollapse,
     isLowestEntropy = false,
 }) => {
     const conditionalCss = [
-        'w-full h-full',
+        'w-full h-full overflow-hidden',
         'border rounded',
         value
             ? "flex justify-center items-center"
@@ -26,7 +28,8 @@ const SudokuTile: FC<Props> = ({
         isLowestEntropy 
             ? 'border-green-700 bg-green-900'
             : 'border-slate-800',
-        !possibilities.length && !value && 'bg-red-900'
+        !possibilities.length && !value && 'bg-red-900',
+        invalid && 'bg-red-900'
     ].join(' ')
 
     const handleCollapse = useCallback(
@@ -59,7 +62,7 @@ const SudokuTile: FC<Props> = ({
                 possibilities.map(number => (
                     <div 
                         key={number}
-                        className="flex justify-center items-center cursor-pointer"
+                        className="sudokuTile flex justify-center items-center cursor-pointer"
                         onClick={() => handleCollapse(number)}
                     >
                         {number}

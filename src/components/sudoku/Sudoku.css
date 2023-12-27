@@ -28,3 +28,9 @@
             transparent
         );
 }
+
+.sudokuTile:hover {
+    background-color: rgba(0, 0, 0, .5);
+    transition-duration: .4s;
+    border-radius: 4px;
+}
