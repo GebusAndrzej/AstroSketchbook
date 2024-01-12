@@ -1,0 +1,73 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Moving background" >
+    <main id="main" />
+</Layout>
+
+<script>
+    const main = document.getElementById('main') as HTMLDivElement
+    let width = document.body.offsetWidth;
+    let height = document.body.offsetHeight;
+
+    function throttle<GenericFunction>(callback: GenericFunction, interval: number): GenericFunction {
+        let enableCall = true;
+
+        // @ts-ignore
+        return function(...args: IArguments[]) {
+            if (!enableCall) return;
+
+            enableCall = false;
+            // @ts-ignore
+            callback.apply(this, args);
+            setTimeout(() => enableCall = true, interval);
+        }
+    }
+
+    function calculateNewOffset(value: number, maxValue: number): number {
+        const strength = .06;
+        const relativeValue = +(Math.abs(value) / maxValue).toFixed(2)
+        const smoothFunction = (x: number) => (2 * x * (1 - x) + .5)
+
+        const offset = value * smoothFunction(relativeValue)
+        return (value + offset) * strength;
+    }
+
+    function calculate(event: MouseEvent) {
+        const halfWidth = width / 2;
+        const halfHeight = height / 2;
+
+        const deltaX = halfWidth - event.clientX;
+        const deltaY = halfHeight - event.clientY
+
+        const newOffsetX = calculateNewOffset(deltaX, halfWidth);
+        const newOffsetY = calculateNewOffset(deltaY, halfHeight);
+
+        main.style.backgroundPositionX = `calc(50% + ${newOffsetX}px)`
+        main.style.backgroundPositionY = `calc(50% + ${newOffsetY}px)`
+    }
+
+    const reizeObserver = new ResizeObserver(entries => {
+        entries.forEach(entry => {
+            width = entry.contentRect.width;
+            height = entry.contentRect.height
+        });
+    })
+    reizeObserver.observe(document.body);
+
+    document.addEventListener(
+        'mousemove', 
+        throttle(calculate, 50)
+    )
+</script>
+
+<style>
+    main {
+        transition-duration: .1s;
+        flex: 1;
+        background: url('/public/background.jpg');
+        background-position: calc(50% - 10px) calc(50% - 0px);
+        background-size: 110% 110%;
+    }
+</style>
