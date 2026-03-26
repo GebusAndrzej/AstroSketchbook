@@ -6,6 +6,6 @@ import tailwind from "@astrojs/tailwind";
 // https://astro.build/config
 export default defineConfig({
   site: 'https://gebusandrzej.github.io/',
-  base: '/AstroSketchbook',
+  base: '/AstroSketchbook/',
   integrations: [react(), tailwind()]
 });
