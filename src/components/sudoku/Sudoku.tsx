@@ -1,12 +1,14 @@
 import { useMemo, type FC, useState, useCallback } from 'react'
 import SudokuTile from './SudokuTile'
-import { DEFAULT_VALUES, intersection, xyToGridNo } from './utils/utils'
+import { generateSudokuPuzzle, intersection, xyToGridNo } from './utils/utils'
 import './Sudoku.css'
 import { columnPossibilities, gridPossibilities, rowPossibilities } from './utils/possibilities'
 import { checkColumns, checkGrids, checkRows } from './utils/rules'
 
+const createEmptyBoard = () => Array(9).fill(null).map(() => Array(9).fill(undefined)) as number[][]
+
 const Sudoku: FC = () => {
-  const [values, setValues] = useState(DEFAULT_VALUES)
+  const [values, setValues] = useState(() => createEmptyBoard())
 
   const preparePossibilities = useCallback(
     (x: number, y: number) => {
@@ -58,17 +60,25 @@ const Sudoku: FC = () => {
   const handleCollapse = useCallback(
     (x: number, y: number, value: number) => {
       setValues(prev => {
-        const newValue = [...prev];
-        newValue[x][y] = value;
-        return newValue;
+        const newValues = prev.map(row => [...row]);
+        newValues[x][y] = value;
+        return newValues;
       })
     },
-    [values, setValues]
+    []
   )
 
+  const handleReset = useCallback(() => {
+    setValues(createEmptyBoard());
+  }, [])
+
+  const handleGenerateNew = useCallback(() => {
+    setValues(generateSudokuPuzzle());
+  }, [])
+
   return (
-    // <div className='h-full w-full'>
-      <div className='sudoku h-full w-full grid grid-rows-9 grid-cols-9 gap-1'>
+    <div className='flex flex-col gap-4 w-full h-full'>
+      <div className='sudoku aspect-square w-full grid grid-rows-9 grid-cols-9 gap-1'>
         {preparedValues.flat().map((entry) => (
           <SudokuTile
             key={`${entry.x}${entry.y}${entry.value}`}
@@ -86,7 +96,21 @@ const Sudoku: FC = () => {
           />
           ))}
       </div>
-    // </div>
+      <div className='flex gap-4 justify-center'>
+        <button
+          onClick={handleReset}
+          className='px-6 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg border border-slate-500 transition-colors'
+        >
+          Reset
+        </button>
+        <button
+          onClick={handleGenerateNew}
+          className='px-6 py-2 bg-green-800 hover:bg-green-700 text-white rounded-lg border border-green-600 transition-colors'
+        >
+          Generate new game
+        </button>
+      </div>
+    </div>
   )
 }
 
